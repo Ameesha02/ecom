@@ -2,8 +2,10 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
 const app = require('../src/app');
+const env = require('../src/config/env');
 
-const token = (role) => jwt.sign({ sub: '11111111-1111-4111-8111-111111111111', role }, 'test-access');
+// Sign with whatever secret the app is configured with (differs between local and CI).
+const token = (role) => jwt.sign({ sub: '11111111-1111-4111-8111-111111111111', role }, env.accessSecret);
 
 test('health check', async () => {
   const r = await request(app).get('/health');
